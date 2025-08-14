@@ -1,5 +1,7 @@
 package tesch.zandona.models;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Service {
@@ -9,53 +11,63 @@ public class Service {
     private double valor;
     private Date data;
 
-    public Service() {
-    }
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
-    public Service(String placa, String servico, double valor) {
+    public Service(int id, String placa, String servico, double valor, Date data) {
+        this.id = id;
         this.placa = placa;
         this.servico = servico;
         this.valor = valor;
-        this.data = new Date();
-    }
-
-    public String getPlaca() {
-        return placa;
-    }
-
-    public void setPlaca(String placa) {
-        this.placa = placa;
-    }
-
-    public String getServico() {
-        return servico;
-    }
-
-    public void setServico(String servico) {
-        this.servico = servico;
-    }
-
-    public double getValor() {
-        return valor;
-    }
-
-    public void setValor(double valor) {
-        this.valor = valor;
-    }
-
-    public Date getData() {
-        return data;
-    }
-
-    public void setData(Date data) {
         this.data = data;
+    }
+
+    public Service(int id, String placa, String servico, double valor) {
+        this(id, placa, servico, valor, new Date());
     }
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public String getPlaca() {
+        return placa;
     }
+
+    public String getServico() {
+        return servico;
+    }
+
+    public double getValor() {
+        return valor;
+    }
+
+    public Date getData() {
+        return data;
+    }
+
+    public String toFileFormat() {
+        return id + ";" + placa + ";" + servico + ";" + valor + ";" + sdf.format(data);
+    }
+
+    public static Service fromFileFormat(String line) {
+        try {
+            String[] parts = line.split(";");
+            return new Service(
+                    Integer.parseInt(parts[0]),
+                    parts[1],
+                    parts[2],
+                    Double.parseDouble(parts[3]),
+                    sdf.parse(parts[4]));
+        } catch (ParseException | NumberFormatException e) {
+            System.out.println("Erro ao ler serviço: " + e.getMessage());
+            return null;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return String.format("ID: %d | Placa: %s | Serviço: %s | Valor: R$ %.2f | Data: %s",
+                id, placa, servico, valor, sdf.format(data));
+    }
+
 }
