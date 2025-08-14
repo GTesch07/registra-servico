@@ -4,6 +4,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class ServiceManager {
     private static final String ARQUIVO = "servicos.txt";
@@ -15,7 +16,12 @@ public class ServiceManager {
     }
 
     public void adicionar(Service servico) {
-        servico = new Service(idCounter++, servico.getPlaca(), servico.getServico(), servico.getValor());
+        int maiorId = servicos.stream()
+                .mapToInt(Service::getId)
+                .max()
+                .orElse(0);
+        servico = new Service(maiorId + 1, servico.getPlaca(), servico.getServico(), servico.getValor(),
+                servico.getData());
         servicos.add(servico);
         salvar();
     }
@@ -83,5 +89,16 @@ public class ServiceManager {
         } catch (IOException e) {
             System.out.println("Erro ao carregar: " + e.getMessage());
         }
+
+    }
+
+    public static void limparTela() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+
+    public static void pausar() {
+        System.out.println("\nPressione Enter para continuar...");
+        new Scanner(System.in).nextLine();
     }
 }

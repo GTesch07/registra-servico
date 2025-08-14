@@ -1,5 +1,7 @@
 package tesch;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.Scanner;
 
 import tesch.zandona.models.Service;
@@ -11,6 +13,7 @@ public class Main {
         ServiceManager manager = new ServiceManager();
 
         while (true) {
+            ServiceManager.limparTela();
             System.out.println("\n===== MENU =====");
             System.out.println("1 - Adicionar novo Serviço");
             System.out.println("2 - Listar todos os Serviços");
@@ -28,24 +31,52 @@ public class Main {
                     String servico = sc.nextLine();
                     System.out.print("Valor: ");
                     double valor = Double.parseDouble(sc.nextLine());
-                    manager.adicionar(new Service(0, placa, servico, valor));
+
+                    Date dataServico = null;
+                    while (dataServico == null) {
+                        System.out.print("Data (dd/MM/yyyy): ");
+                        String dataStr = sc.nextLine();
+                        try {
+                            dataServico = Service.parseData(dataStr);
+                        } catch (ParseException e) {
+                            System.out.println("Data inválida. Use o formato dd/MM/yyyy.");
+                        }
+                    }
+
+                    manager.adicionar(new Service(0, placa, servico, valor, dataServico));
+                    ServiceManager.pausar();
                     break;
+
                 case "2":
                     manager.listar();
+                    ServiceManager.pausar();
                     break;
+
                 case "3":
                     System.out.print("Digite a placa: ");
                     manager.localizarPorPlaca(sc.nextLine());
+                    ServiceManager.pausar();
                     break;
+
                 case "4":
                     System.out.print("Digite o ID para remover: ");
-                    manager.removerPorId(Integer.parseInt(sc.nextLine()));
+                    String entrada = sc.nextLine();
+                    try {
+                        int id = Integer.parseInt(entrada);
+                        manager.removerPorId(id);
+                    } catch (NumberFormatException e) {
+                        System.out.println("ID inválido. Digite apenas números.");
+                    }
+                    ServiceManager.pausar();
                     break;
+
                 case "5":
                     System.out.println("Saindo...");
                     return;
+
                 default:
                     System.out.println("Opção inválida.");
+                    ServiceManager.pausar();
             }
         }
     }

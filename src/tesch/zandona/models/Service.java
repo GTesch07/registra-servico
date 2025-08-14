@@ -11,7 +11,7 @@ public class Service {
     private double valor;
     private Date data;
 
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
     public Service(int id, String placa, String servico, double valor, Date data) {
         this.id = id;
@@ -19,10 +19,6 @@ public class Service {
         this.servico = servico;
         this.valor = valor;
         this.data = data;
-    }
-
-    public Service(int id, String placa, String servico, double valor) {
-        this(id, placa, servico, valor, new Date());
     }
 
     public int getId() {
@@ -64,10 +60,13 @@ public class Service {
         }
     }
 
+    public static Date parseData(String dataStr) throws ParseException {
+        return sdf.parse(dataStr);
+    }
+
     @Override
     public String toString() {
         return String.format("ID: %d | Placa: %s | Serviço: %s | Valor: R$ %.2f | Data: %s",
                 id, placa, servico, valor, sdf.format(data));
     }
-
 }
