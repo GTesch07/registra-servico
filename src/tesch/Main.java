@@ -25,6 +25,7 @@ public class Main {
             String opcao = sc.nextLine();
             switch (opcao) {
                 case "1":
+                    System.out.println("");
                     System.out.print("Placa: ");
                     String placa = sc.nextLine();
                     System.out.print("Serviço: ");
@@ -48,17 +49,20 @@ public class Main {
                     break;
 
                 case "2":
+                    System.out.println("");
                     manager.listar();
                     ServiceManager.pausar();
                     break;
 
                 case "3":
+                    System.out.println("");
                     System.out.print("Digite a placa: ");
                     manager.localizarPorPlaca(sc.nextLine());
                     ServiceManager.pausar();
                     break;
 
                 case "4":
+                    System.out.println("");
                     System.out.print("Digite o ID para remover: ");
                     String entrada = sc.nextLine();
                     try {
@@ -71,6 +75,7 @@ public class Main {
                     break;
 
                 case "5":
+                    System.out.println("");
                     System.out.println("Saindo...");
                     return;
 
