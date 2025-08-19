@@ -14,12 +14,13 @@ public class Main {
 
         while (true) {
             ServiceManager.limparTela();
-            System.out.println("\n===== MENU =====");
+            System.out.println("\n======== REGISTRO DE SERVIÇOS ========\n");
             System.out.println("1 - Adicionar novo Serviço");
             System.out.println("2 - Listar todos os Serviços");
             System.out.println("3 - Localizar serviços por placa");
             System.out.println("4 - Remover Serviço (por id)");
             System.out.println("5 - Sair");
+            System.out.println("\n=====================================\n");
             System.out.print("Escolha: ");
 
             String opcao = sc.nextLine();
